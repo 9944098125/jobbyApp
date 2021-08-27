@@ -23,7 +23,7 @@ const JobCard = props => {
         <div className="row">
           <img src={imageUrl} alt={title} className="company-img" />
           <div className="col">
-            <h1 className="head">{title}</h1>
+            <h1 className="head2">{title}</h1>
             <p className="rating">{rating}</p>
           </div>
         </div>

@@ -2,7 +2,9 @@ import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 
-import SalaryRangeAndEmploymentType from '../SalaryAndTypesRoute'
+import SalaryRangesRoute from '../SalaryRangesRoute'
+import EmploymentTypesList from '../EmploymentTypeRoute'
+import SearchInput from '../SearchInput'
 import JobCard from '../JobItem'
 import Profile from '../Profile'
 
@@ -83,14 +85,14 @@ class JobsRoute extends Component {
     if (response.ok) {
       const fetchedData = await response.json()
       const updatedData = fetchedData.jobs.map(job => ({
-        title: job.company_name,
+        title: job.title,
         rating: job.rating,
-        imageUrl: job.avatar_url,
+        imageUrl: job.company_logo_url,
         id: job.id,
-        place: job.place,
-        jobType: job.job_type,
-        salary: job.salary,
-        description: job.description,
+        place: job.location,
+        jobType: job.employment_type,
+        salary: job.package_per_annum,
+        description: job.job_description,
       }))
       this.setState({
         jobsList: updatedData,
@@ -185,22 +187,30 @@ class JobsRoute extends Component {
     const {activeEmploymentType, searchInput, activeSalaryRange} = this.state
 
     return (
-      <div className="all-products-section">
-        <div className="col">
-          <Profile />
-          <SalaryRangeAndEmploymentType
-            searchInput={searchInput}
-            employmentTypesList={employmentTypesList}
-            salaryRangesList={salaryRangesList}
-            changeSearchInput={this.changeSearchInput}
-            enterSearchInput={this.enterSearchInput}
-            activeEmploymentType={activeEmploymentType}
-            activeSalaryRange={activeSalaryRange}
-            changeEmploymentType={this.changeEmploymentType}
-            changeSalaryRange={this.changeSalaryRange}
-          />
+      <div className="input">
+        <SearchInput
+          className="search-input"
+          searchInput={searchInput}
+          onChangeSearchInput={this.onChangeSearchInput}
+        />
+        <div className="all-products-section">
+          <div className="col">
+            <Profile />
+            <h1 className="head">Type Of Employment</h1>
+            <EmploymentTypesList
+              employmentTypesList={employmentTypesList}
+              activeEmploymentType={activeEmploymentType}
+              changeEmploymentType={this.changeEmploymentType}
+            />
+            <h1 className="head">Salary Range</h1>
+            <SalaryRangesRoute
+              salaryRangesList={salaryRangesList}
+              activeSalaryRange={activeSalaryRange}
+              changeSalaryRange={this.changeSalaryRange}
+            />
+          </div>
+          {this.renderAllJobs()}
         </div>
-        {this.renderAllJobs()}
       </div>
     )
   }

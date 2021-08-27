@@ -1,7 +1,8 @@
 import {Link} from 'react-router-dom'
 
 import Profile from '../Profile'
-import SalaryRangeAndEmploymentType from '../SalaryAndTypesRoute'
+import SalaryRangesRoute from '../SalaryRangesRoute'
+import EmploymentTypesList from '../EmploymentTypeRoute'
 import Header from '../Header'
 
 import './index.css'
@@ -13,7 +14,8 @@ const NotFound = () => (
       <div className="not-found-container">
         <div className="col">
           <Profile />
-          <SalaryRangeAndEmploymentType />
+          <EmploymentTypesList />
+          <SalaryRangesRoute />
         </div>
         <img
           src="https://assets.ccbp.in/frontend/react-js/jobby-app-not-found-img.png"
