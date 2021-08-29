@@ -20,8 +20,8 @@ const SalaryRangesRoute = props => {
           key={range.salaryRangeId}
           onClick={onClickSalaryRangeItem}
         >
-          <input type="checkbox" value={range.salaryRangeId} />
-          <p className={rangeClassName}>{range.label}</p>
+          <input type="radio" value={range.salaryRangeId} />
+          <label className={rangeClassName}>{range.label}</label>
         </li>
       )
     })

@@ -1,10 +1,12 @@
 import {Component} from 'react'
+import {Link} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 
 import SalaryRangesRoute from '../SalaryRangesRoute'
 import EmploymentTypesList from '../EmploymentTypeRoute'
 import SearchInput from '../SearchInput'
+import Header from '../Header'
 import JobCard from '../JobItem'
 import Profile from '../Profile'
 
@@ -125,13 +127,18 @@ class JobsRoute extends Component {
     <div className="products-error-view-container">
       <img
         src="https://assets.ccbp.in/frontend/react-js/jobby-app-not-found-img.png"
-        alt="not found"
+        alt="failure view"
         className="products-failure-img"
       />
-      <h1 className="product-failure-heading-text">Page Not Found</h1>
+      <h1 className="product-failure-heading-text">
+        Oops! Something Went Wrong
+      </h1>
       <p className="products-failure-description">
-        Were sorry. the page you requested could not be found.
+        We cannot seem to find the page you are looking for
       </p>
+      <Link to="/jobs">
+        <button type="button">Retry</button>
+      </Link>
     </div>
   )
 
@@ -188,10 +195,11 @@ class JobsRoute extends Component {
 
     return (
       <div className="input">
+        <Header />
         <SearchInput
           className="search-input"
           searchInput={searchInput}
-          onChangeSearchInput={this.onChangeSearchInput}
+          changeSearchInput={this.changeSearchInput}
         />
         <div className="all-products-section">
           <div className="col">

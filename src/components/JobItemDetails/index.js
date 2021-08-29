@@ -19,7 +19,7 @@ const apiStatusConstants = {
 
 class JobItemDetails extends Component {
   state = {
-    jobData: {},
+    jobDetails: {},
     similarJobsData: [],
     apiStatus: apiStatusConstants.initial,
   }
@@ -33,15 +33,13 @@ class JobItemDetails extends Component {
     companyWebsite: data.company_website,
     jobDescription: data.job_description,
     id: data.id,
-    skills: data.skills,
     title: data.title,
     rating: data.rating,
+    skills: data.skills,
     place: data.location,
     jobType: data.employment_type,
     salary: data.package_per_annum,
     lifeAtCompany: data.life_at_company,
-    description: data.description,
-    imgUrl: data.image_url,
   })
 
   getJobData = async () => {
@@ -63,12 +61,12 @@ class JobItemDetails extends Component {
     const response = await fetch(apiUrl, options)
     if (response.ok) {
       const fetchedData = await response.json()
-      const updatedData = this.getFormattedData(fetchedData)
+      const updatedData = this.getFormattedData(fetchedData.job_details)
       const updatedSimilarJobsData = fetchedData.similar_jobs.map(
         eachSimilarJob => this.getFormattedData(eachSimilarJob),
       )
       this.setState({
-        jobData: updatedData,
+        jobDetails: updatedData,
         similarJobsData: updatedSimilarJobsData,
         apiStatus: apiStatusConstants.success,
       })
@@ -89,41 +87,44 @@ class JobItemDetails extends Component {
   renderFailureView = () => (
     <div className="product-details-error-view-container">
       <img
-        alt="error view"
+        alt="failure view"
         src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
         className="error-view-image"
       />
-      <h1 className="product-not-found-heading">Job Not Found</h1>
+      <h1 className="product-not-found-heading">Oops! Something Went Wrong</h1>
+      <p>We cannot seem to find the page you are looking for</p>
       <Link to="/products">
         <button type="button" className="button">
-          Continue Job Search
+          Retry
         </button>
       </Link>
     </div>
   )
 
   renderJobDetailsView = () => {
-    const {jobData, similarJobsData} = this.state
+    const {jobDetails, similarJobsData} = this.state
     const {
       companyLogoUrl,
       companyWebsite,
       jobDescription,
-      id,
-      skills,
       title,
       rating,
       salary,
       jobType,
       place,
-      description,
-      imgUrl,
-    } = jobData
+      lifeAtCompany,
+      skills,
+    } = jobDetails
 
     return (
       <>
-        <div className="col-1">
+        <div className="column-job-item-details">
           <div className="row-1">
-            <img src={companyLogoUrl} alt={companyWebsite} />
+            <img
+              src={companyLogoUrl}
+              alt="job details company logo"
+              className="logo-url"
+            />
             <div className="col-2">
               <h1 className="job-details-head">{title}</h1>
               <p className="rating">{rating}</p>
@@ -141,24 +142,40 @@ class JobItemDetails extends Component {
             <p className="sal">{salary}</p>
           </div>
           <hr className="hr-line" />
-          <h1 className="desc-head">Description</h1>
+          <div className="space-between">
+            <h1 className="desc-head">Description</h1>
+            <a href={companyWebsite}>
+              <p className="link">Visit</p>
+            </a>
+          </div>
           <p className="desc5">{jobDescription}</p>
           <h1 className="skills">Skills</h1>
           <ul className="flex-wrap">
             {skills.map(eachSkill => (
-              <img src={eachSkill.imageUrl} alt={eachSkill.name} />
+              <img
+                src={eachSkill.image_url}
+                alt={eachSkill.name}
+                key={eachSkill.name}
+                className="skills-list"
+              />
             ))}
           </ul>
           <h1 className="life">Life At Company</h1>
-          <p className="com-desc">{description}</p>
-          <img src={imgUrl} alt={id} />
+          <div className="life-row">
+            <p className="com-desc">{lifeAtCompany.description}</p>
+            <img
+              src={lifeAtCompany.image_url}
+              alt="life at company"
+              className="life-image"
+            />
+          </div>
         </div>
         <h1 className="similar-products-heading">Similar Jobs</h1>
         <ul className="similar-products-list">
           {similarJobsData.map(eachSimilarJob => (
             <SimilarJobCard
               similarJobDetails={eachSimilarJob}
-              key={eachSimilarJob.id}
+              key={eachSimilarJob.place}
             />
           ))}
         </ul>
@@ -185,7 +202,7 @@ class JobItemDetails extends Component {
     return (
       <>
         <Header />
-        <div className="product-item-details-container">
+        <div className="job-item-details-container">
           {this.renderJobDetails()}
         </div>
       </>

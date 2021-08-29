@@ -21,7 +21,7 @@ const EmploymentTypesList = props => {
           onClick={onClickEmploymentTypeItem}
         >
           <input type="checkbox" value={employment.employmentTypeId} />
-          <p className={employmentClassName}>{employment.label}</p>
+          <label className={employmentClassName}>{employment.label}</label>
         </li>
       )
     })
